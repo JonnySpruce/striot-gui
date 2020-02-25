@@ -32,6 +32,55 @@ packages:
       sha256: 5769473440ae594ae8679dde9fe12b6d00a49264a9dd8962a53ff3ae5740d7a5
   original:
     hackage: aeson-1.4.6.0
+- completed:
+    hackage: hw-kafka-client-3.0.0@sha256:a4757287b765de252f5f183e003eaf63c2c0acda051bdd72fd3f8610ca1f3cee,3172
+    pantry-tree:
+      size: 2055
+      sha256: e846e5d799beab5c83a91d6a9c93b54c9e86fc3a8eda9bd389216d44f5c9c809
+  original:
+    hackage: hw-kafka-client-3.0.0@sha256:a4757287b765de252f5f183e003eaf63c2c0acda051bdd72fd3f8610ca1f3cee,3172
+- completed:
+    hackage: net-mqtt-0.6.2.3@sha256:3c2201ad7021a07bccd8bb0c64a8450451085ddd03178f2a916e7951d4e7260a,4131
+    pantry-tree:
+      size: 700
+      sha256: d8baf796ada475bf15e145bcb316e4d6cd392308deed90be863c6ffc5b82047d
+  original:
+    hackage: net-mqtt-0.6.2.3@sha256:3c2201ad7021a07bccd8bb0c64a8450451085ddd03178f2a916e7951d4e7260a,4131
+- completed:
+    hackage: prometheus-2.1.3@sha256:4fdf8602f7c74367cda182cf71dab108f78a86993b428bf96b61dd6c519b6f22,4296
+    pantry-tree:
+      size: 1559
+      sha256: a8d0a0150abddf0d7b673fcb19ff2ef235d4005161826e1538ad802394c9fc0e
+  original:
+    hackage: prometheus-2.1.3@sha256:4fdf8602f7c74367cda182cf71dab108f78a86993b428bf96b61dd6c519b6f22,4296
+- completed:
+    hackage: store-0.7.2@sha256:94ca07b2af0ee15ee9e71f1576ea630676c3c016788c3dcb19d33d2998c3c228,7825
+    pantry-tree:
+      size: 1292
+      sha256: 9cfa13cb040285bf132085f3b75f31cdfad279fe7f31f05e5b20b2a2f9d85aca
+  original:
+    hackage: store-0.7.2@sha256:94ca07b2af0ee15ee9e71f1576ea630676c3c016788c3dcb19d33d2998c3c228,7825
+- completed:
+    hackage: store-streaming-0.2.0.0@sha256:f1194a9276362691f2ccc92473f4ebc9e7f7e57131e8f7c20c7c2e4eb264eb70,2006
+    pantry-tree:
+      size: 479
+      sha256: 1a9236fe7b9d3172197c57d5b879dd15c51b4f825fd788688eafda75074c7ecc
+  original:
+    hackage: store-streaming-0.2.0.0@sha256:f1194a9276362691f2ccc92473f4ebc9e7f7e57131e8f7c20c7c2e4eb264eb70,2006
+- completed:
+    hackage: store-core-0.4.4.2@sha256:11403cad88cf4f3675d49baf76cb5dd56363e786c7e25ef00fa57296af29a7b2,1444
+    pantry-tree:
+      size: 271
+      sha256: 0db8705011f7f25d9e5f639c52ccce5fccb1de578de685def2b79e289d9de4cc
+  original:
+    hackage: store-core-0.4.4.2@sha256:11403cad88cf4f3675d49baf76cb5dd56363e786c7e25ef00fa57296af29a7b2,1444
+- completed:
+    hackage: th-utilities-0.2.3.1@sha256:40ebb0bc9569b4ff5c3be93c58a1e2a35e308a7e3effc73f6b324980f53f73fc,1869
+    pantry-tree:
+      size: 881
+      sha256: fa8f7a729bb497831a087af6368cc44a52bfdf058c54882a6f5513feb4d36212
+  original:
+    hackage: th-utilities-0.2.3.1@sha256:40ebb0bc9569b4ff5c3be93c58a1e2a35e308a7e3effc73f6b324980f53f73fc,1869
 snapshots:
 - completed:
     size: 489011
