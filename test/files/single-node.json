@@ -1,0 +1,14 @@
+[{
+    "id": "780d3bdd.622694",
+    "type": "filter",
+    "z": "f1bacb78.71c938",
+    "name": "",
+    "func": "filter :: Int -> Bool\nfilter x = x > 5",
+    "x": 360,
+    "y": 180,
+    "wires": [
+        [
+            "45a02407.d5b4fc"
+        ]
+    ]
+}]

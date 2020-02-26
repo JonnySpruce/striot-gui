@@ -2,7 +2,8 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
-    "tasks": [{
+    "tasks": [
+        {
             "label": "build",
             "type": "shell",
             "command": "stack build",
@@ -18,10 +19,6 @@
             "group": {
                 "kind": "test",
                 "isDefault": true
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
             }
         },
         {
