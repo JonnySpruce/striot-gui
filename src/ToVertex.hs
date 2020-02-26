@@ -3,7 +3,6 @@
 module ToVertex
   ( toVertex
   , nodesFromJSON
-  , test2
   , NRNode(..)
   )
 where
@@ -15,6 +14,7 @@ import           Data.Maybe
 import           GHC.Generics
 import qualified Data.ByteString.Lazy          as B
 
+-- | NRNode - the Haskell data representation of Node-RED nodes
 data NRNode =
     NRNode { id :: String
          , nodeType :: String
@@ -27,8 +27,7 @@ data NRNode =
     } deriving (Show)
 
 
--- instance FromJSON NRNode
-
+-- Defines how to read the JSON object and convert into the NRNode
 instance FromJSON NRNode where
   parseJSON (Object v) =
     NRNode
@@ -49,18 +48,14 @@ instance FromJSON NRNode where
       <*> v
       .:? "wires"
 
+-- | Reads the specified file and converts into an array of NRNodes
+nodesFromJSON :: FilePath -> IO [NRNode]
+nodesFromJSON x = fromJust . decode <$> B.readFile x :: IO [NRNode]
 
--- nodeFromJSON :: [Value] -> (Maybe NRNode)
--- nodeFromJSON x = decode x :: (Maybe NRNode)
-
-nodesFromJSON :: FilePath -> IO ([NRNode])
-nodesFromJSON x = fromJust . decode <$> B.readFile x :: IO ([NRNode])
-
-test2 :: Maybe [String]
-test2 = decode "[\"1\",\"1\",\"1\"]" :: Maybe [String]
-
+-- currently not used
 toVertex :: Int -> String -> StreamVertex
 toVertex = filterVertex
 
+-- currently not used
 filterVertex :: Int -> String -> StreamVertex
 filterVertex i x = StreamVertex i Filter [x, "s"] "String" "String"
