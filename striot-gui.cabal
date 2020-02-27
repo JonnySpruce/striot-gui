@@ -1,0 +1,77 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 8892e2bbd4c344acb97f1b09b5ac0b9f76555a7eb42f7ba5faab42e064013492
+
+name:           striot-gui
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/jonnyspruce/striot-gui#readme>
+homepage:       https://github.com/jonnyspruce/striot-gui#readme
+bug-reports:    https://github.com/jonnyspruce/striot-gui/issues
+author:         Jonny Spruce
+maintainer:     jspruce94@gmail.com
+copyright:      2020 Jonny Spruce
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/jonnyspruce/striot-gui
+
+library
+  exposed-modules:
+      Lib
+      ToVertex
+  other-modules:
+      Paths_striot_gui
+  hs-source-dirs:
+      src
+  build-depends:
+      aeson >=1.4.6.0
+    , algebraic-graphs >=0.1
+    , base >=4.7 && <5
+    , bytestring >=0.10.10.0
+    , striot >=0.1.0.4
+  default-language: Haskell2010
+
+executable striot-gui-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_striot_gui
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson >=1.4.6.0
+    , algebraic-graphs >=0.1
+    , base >=4.7 && <5
+    , bytestring >=0.10.10.0
+    , striot >=0.1.0.4
+    , striot-gui
+  default-language: Haskell2010
+
+test-suite striot-gui-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_striot_gui
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson >=1.4.6.0
+    , algebraic-graphs >=0.1
+    , base >=4.7 && <5
+    , bytestring >=0.10.10.0
+    , striot >=0.1.0.4
+    , striot-gui
+    , hspec
+    , QuickCheck
+  default-language: Haskell2010
