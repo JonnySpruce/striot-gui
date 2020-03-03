@@ -19,12 +19,12 @@ main =
         let h = head n
         ToVertex.id h `shouldBe` "780d3bdd.622694"
         nodeType h `shouldBe` "filter"
-        z h `shouldBe` "f1bacb78.71c938"
-        name h `shouldBe` ""
-        func h `shouldBe` "filter :: Int -> Bool\nfilter x = x > 5"
-        x h `shouldBe` 360
-        y h `shouldBe` 180
-        wires h `shouldBe` [["45a02407.d5b4fc"]]
+        fromJust (z h) `shouldBe` "f1bacb78.71c938"
+        fromJust (name h) `shouldBe` ""
+        fromJust (func h) `shouldBe` "filter :: Int -> Bool\nfilter x = x > 5"
+        fromJust (x h) `shouldBe` 360
+        fromJust (y h) `shouldBe` 180
+        fromJust (wires h) `shouldBe` [["45a02407.d5b4fc"]]
 
     -- describe "multiple nodes" $ do
     --   it "correctly reads the data about the nodes" $ do

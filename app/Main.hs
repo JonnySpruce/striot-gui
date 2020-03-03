@@ -11,7 +11,8 @@ main = do
   case args of
     [fileName] -> do
       x <- nodesFromJSON fileName
-      putStr (show x)
+      let striotNodes = filterStriotNodes x
+      putStr (show striotNodes)
     _ -> helpText
 
 helpText :: IO ()

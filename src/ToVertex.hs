@@ -3,6 +3,7 @@
 module ToVertex
   ( toVertex
   , nodesFromJSON
+  , filterStriotNodes
   , NRNode(..)
   )
 where
@@ -18,12 +19,12 @@ import qualified Data.ByteString.Lazy          as B
 data NRNode =
     NRNode { id :: String
          , nodeType :: String
-         , z :: String
-         , name :: String
-         , func :: String
-         , x :: Int
-         , y :: Int
-         , wires :: [[String]]
+         , z :: Maybe String
+         , name :: Maybe String
+         , func :: Maybe String
+         , x :: Maybe Int
+         , y :: Maybe Int
+         , wires :: Maybe [[String]]
     } deriving (Generic, Show)
 
 
@@ -38,9 +39,8 @@ instance FromJSON NRNode where
 nodesFromJSON :: FilePath -> IO [NRNode]
 nodesFromJSON x = fromJust . decode <$> B.readFile x :: IO [NRNode]
 
-removeNullNodes :: [Maybe NRNode] -> [NRNode]
-removeNullNodes (Nothing : xs) = removeNullNodes xs
-removeNullNodes (x       : xs) = fromJust x : removeNullNodes xs
+filterStriotNodes :: [NRNode] -> [NRNode]
+filterStriotNodes = filter (isJust . z)
 
 -- currently not used
 toVertex :: Int -> NRNode -> StreamVertex
@@ -49,4 +49,5 @@ toVertex i n | nodeType n == "filter" = filterVertex i n
 
 -- currently not used
 filterVertex :: Int -> NRNode -> StreamVertex
-filterVertex i x = StreamVertex i Filter [func x, "s"] "String" "String"
+filterVertex i x =
+  StreamVertex i Filter [fromJust (func x), "s"] "String" "String"
