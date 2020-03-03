@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, DeriveGeneric #-}
 
 module ToVertex
   ( toVertex
@@ -18,44 +18,35 @@ import qualified Data.ByteString.Lazy          as B
 data NRNode =
     NRNode { id :: String
          , nodeType :: String
-         , z :: Maybe String
-         , name :: Maybe String
-         , func :: Maybe String
-         , x :: Maybe Int
-         , y :: Maybe Int
-         , wires :: Maybe [[String]]
-    } deriving (Show)
+         , z :: String
+         , name :: String
+         , func :: String
+         , x :: Int
+         , y :: Int
+         , wires :: [[String]]
+    } deriving (Generic, Show)
 
 
 -- Defines how to read the JSON object and convert into the NRNode
 instance FromJSON NRNode where
-  parseJSON (Object v) =
-    NRNode
-      <$> v
-      .:  "id"
-      <*> v
-      .:  "type"
-      <*> v
-      .:? "z"
-      <*> v
-      .:? "name"
-      <*> v
-      .:? "func"
-      <*> v
-      .:? "x"
-      <*> v
-      .:? "y"
-      <*> v
-      .:? "wires"
+  parseJSON = genericParseJSON defaultOptions
+    { fieldLabelModifier = \x -> if x == "nodeType" then "type" else x
+    }
+
 
 -- | Reads the specified file and converts into an array of NRNodes
 nodesFromJSON :: FilePath -> IO [NRNode]
 nodesFromJSON x = fromJust . decode <$> B.readFile x :: IO [NRNode]
 
--- currently not used
-toVertex :: Int -> String -> StreamVertex
-toVertex = filterVertex
+removeNullNodes :: [Maybe NRNode] -> [NRNode]
+removeNullNodes (Nothing : xs) = removeNullNodes xs
+removeNullNodes (x       : xs) = fromJust x : removeNullNodes xs
 
 -- currently not used
-filterVertex :: Int -> String -> StreamVertex
-filterVertex i x = StreamVertex i Filter [x, "s"] "String" "String"
+toVertex :: Int -> NRNode -> StreamVertex
+toVertex i n | nodeType n == "filter" = filterVertex i n
+
+
+-- currently not used
+filterVertex :: Int -> NRNode -> StreamVertex
+filterVertex i x = StreamVertex i Filter [func x, "s"] "String" "String"

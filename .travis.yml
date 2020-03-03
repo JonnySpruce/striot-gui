@@ -17,8 +17,6 @@ addons:
     packages:
       - libgmp-dev
       - librdkafka-dev
-      - librdkafka1
-      - gcc
 
 before_install:
   # Download and unpack the stack executable
