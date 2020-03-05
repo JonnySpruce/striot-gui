@@ -25,7 +25,7 @@ data NRNode =
          , x :: Maybe Int
          , y :: Maybe Int
          , wires :: Maybe [[String]]
-    } deriving (Generic, Show)
+    } deriving (Generic, Show, Eq)
 
 
 -- Defines how to read the JSON object and convert into the NRNode
