@@ -68,20 +68,6 @@ packages:
   original:
     hackage: socks-0.6.1
 - completed:
-    hackage: store-0.7.2@sha256:94ca07b2af0ee15ee9e71f1576ea630676c3c016788c3dcb19d33d2998c3c228,7825
-    pantry-tree:
-      size: 1292
-      sha256: 9cfa13cb040285bf132085f3b75f31cdfad279fe7f31f05e5b20b2a2f9d85aca
-  original:
-    hackage: store-0.7.2
-- completed:
-    hackage: store-core-0.4.4.2@sha256:11403cad88cf4f3675d49baf76cb5dd56363e786c7e25ef00fa57296af29a7b2,1444
-    pantry-tree:
-      size: 271
-      sha256: 0db8705011f7f25d9e5f639c52ccce5fccb1de578de685def2b79e289d9de4cc
-  original:
-    hackage: store-core-0.4.4.2
-- completed:
     hackage: store-streaming-0.1.0.0@sha256:39d2c8b7960a90195c5f10e60334d1b10324aad01b3470fd8713b7acfdbf9cab,2009
     pantry-tree:
       size: 478
