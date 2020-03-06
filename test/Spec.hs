@@ -26,7 +26,7 @@ main = hspec $ do
                 (Just 360)
                 (Just 180)
                 (Just [["45a02407.d5b4fc"]])
-                Nothing
+                (Just [[]]) -- since it refers to another node outside the document it should be removed
 
           nodesFromJSON "test/files/single-node.json"
             `shouldReturn` [expectedNode]
@@ -34,32 +34,36 @@ main = hspec $ do
     describe "on multiple nodes" $ do
       it "correctly reads data about each node" $ do
         -- only check two nodes - a non-StrIoT node and a filterNode
-        let expectedNodes =
-              [ NRNode "d8d488a.0d86178"
-                       (Just 1)
-                       "tab"
-                       Nothing
-                       Nothing
-                       Nothing
-                       Nothing
-                       Nothing
-                       Nothing
-                       Nothing
-              , NRNode "60ac5717.97d4b8"
-                       (Just 2)
-                       "filter"
-                       (Just "d8d488a.0d86178")
-                       (Just "")
-                       (Just "-- node 1\nfilter :: Int -> Bool\n")
-                       (Just 390)
-                       (Just 200)
-                       (Just [["a06f1981.fb6c78"]])
-                       Nothing
-              ]
+        let
+          expectedNodes =
+            [ NRNode "60ac5717.97d4b8"
+                     (Just 1) -- while there is another node first, it is a tab node so not relevant
+                     "filter"
+                     (Just "d8d488a.0d86178")
+                     (Just "")
+                     (Just "-- node 1\nfilter :: Int -> Bool\n")
+                     (Just 390)
+                     (Just 200)
+                     (Just [["a06f1981.fb6c78"]])
+                     (Just [[3]]) -- The ID above is for the third StrIoT node in the file
+            , NRNode
+              "e930e.ff4cdcf2"
+              (Just 2)
+              "filter"
+              (Just "d8d488a.0d86178")
+              (Just "")
+              (Just
+                "-- node 4\nfilter :: Int -> Bool\n-- complete your definition here"
+              )
+              (Just 480)
+              (Just 380)
+              (Just [["8d98e1ee.971af"]])
+              (Just [[5]])
+            ]
 
         n <- nodesFromJSON "test/files/multiple-nodes.json"
-        let actualNodes = take 2 n
-
-        actualNodes `shouldBe` expectedNodes
         -- check that all nodes have been added
-        length actualNodes `shouldBe` length expectedNodes
+        length n `shouldBe` 5
+
+        let actualNodes = take 2 n
+        actualNodes `shouldBe` expectedNodes

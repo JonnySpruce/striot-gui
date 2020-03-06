@@ -40,7 +40,9 @@ instance FromJSON NRNode where
 
 -- | Reads the specified file and converts into an array of NRNodes
 nodesFromJSON :: FilePath -> IO [NRNode]
-nodesFromJSON x = addStrIds . fromJust . decode <$> B.readFile x :: IO [NRNode]
+nodesFromJSON x =
+  addStrIds . filterActualNodes . fromJust . decode <$> B.readFile x :: IO
+      [NRNode]
 
 -- | Removes all nodes from the array which represent tabs etc.
 filterActualNodes :: [NRNode] -> [NRNode]
@@ -51,15 +53,18 @@ addStrIds :: [NRNode] -> [NRNode]
 addStrIds = updateStrWires . zipWith (\id x -> x { strId = Just id }) [1 ..]
 
 -- | Creates/updates the StrIoT wires based on the Node-RED ID and places the equivalent StrIoT ID into the StrWires field
+-- | Also removes any references which are not found in the list of IDs
 updateStrWires :: [NRNode] -> [NRNode]
 updateStrWires [] = []
 updateStrWires (x : xs) =
-  x { strWires = Just (map (map getId) (fromJust (wires x))) }
+  x { strWires = Just (map (filter (> 0) . map getId) (fromJust (wires x))) }
     : updateStrWires xs
   where getId = getStrId (x : xs)
 
 getStrId :: [NRNode] -> String -> Int
-getStrId xs id = fromJust . strId . head . filter (\x -> nrId x == id) $ xs
+getStrId xs id | null results = -1
+               | otherwise    = fromJust . strId . head $ results
+  where results = filter (\x -> id == nrId x) xs
 
 -- | Converts the node to the correct type of Vertex depending on the node type
 toVertex :: NRNode -> StreamVertex
