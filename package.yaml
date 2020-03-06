@@ -47,4 +47,4 @@ tests:
       - -with-rtsopts=-N
     dependencies:
       - striot-gui
-      - hspec >=2.7.1
+      - hspec >=2.6.1
