@@ -17,8 +17,8 @@ import qualified Data.ByteString.Lazy          as B
 
 -- | NRNode - the Haskell data representation of Node-RED nodes
 data NRNode =
-    NRNode { nrId :: String
-         , strId :: Maybe Int
+    NRNode { nrId :: String -- Node-RED ID - as it comes from Node-RED
+         , strId :: Maybe Int -- StrIoT ID - unique ID that can then be used for creating Vertices for StrIoT
          , nodeType :: String
          , z :: Maybe String
          , name :: Maybe String
@@ -53,7 +53,7 @@ addStrIds :: [NRNode] -> [NRNode]
 addStrIds = updateStrWires . zipWith (\id x -> x { strId = Just id }) [1 ..]
 
 -- | Creates/updates the StrIoT wires based on the Node-RED ID and places the equivalent StrIoT ID into the StrWires field
--- | Also removes any references which are not found in the list of IDs
+-- | Also removes any references which are not found in the list of IDs (0 or less)
 updateStrWires :: [NRNode] -> [NRNode]
 updateStrWires [] = []
 updateStrWires (x : xs) =
@@ -61,6 +61,7 @@ updateStrWires (x : xs) =
     : updateStrWires xs
   where getId = getStrId (x : xs)
 
+-- | Tries to find the StrId for a Node given it's NrID
 getStrId :: [NRNode] -> String -> Int
 getStrId xs id | null results = -1
                | otherwise    = fromJust . strId . head $ results
