@@ -18,6 +18,7 @@ main = hspec $ do
         it "correctly reads the data about the node" $ do
           let expectedNode = NRNode
                 "780d3bdd.622694"
+                (Just 1)
                 "filter"
                 (Just "f1bacb78.71c938")
                 (Just "")
@@ -25,6 +26,7 @@ main = hspec $ do
                 (Just 360)
                 (Just 180)
                 (Just [["45a02407.d5b4fc"]])
+                Nothing
 
           nodesFromJSON "test/files/single-node.json"
             `shouldReturn` [expectedNode]
@@ -34,6 +36,7 @@ main = hspec $ do
         -- only check two nodes - a non-StrIoT node and a filterNode
         let expectedNodes =
               [ NRNode "d8d488a.0d86178"
+                       (Just 1)
                        "tab"
                        Nothing
                        Nothing
@@ -41,7 +44,9 @@ main = hspec $ do
                        Nothing
                        Nothing
                        Nothing
+                       Nothing
               , NRNode "60ac5717.97d4b8"
+                       (Just 2)
                        "filter"
                        (Just "d8d488a.0d86178")
                        (Just "")
@@ -49,6 +54,7 @@ main = hspec $ do
                        (Just 390)
                        (Just 200)
                        (Just [["a06f1981.fb6c78"]])
+                       Nothing
               ]
 
         n <- nodesFromJSON "test/files/multiple-nodes.json"
