@@ -1,7 +1,6 @@
 {- HLINT ignore "Redundant do" -}
 
 import           Test.Hspec
-import           Test.QuickCheck
 import           Control.Exception              ( evaluate )
 import           Striot.CompileIoT
 import           Striot.StreamGraph

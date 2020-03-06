@@ -1,18 +1,18 @@
-resolver: lts-15.1
+resolver: lts-13.25
 packages:
   - .
 extra-deps:
   - git: https://github.com/striot/striot.git
     commit: 1441100588615723481b9d7571dbb5b37bbd65d4
-  - algebraic-graphs-0.5
   - aeson-1.4.6.0
-  - bytestring-0.10.10.0
-  - hspec-2.7.1
-  - QuickCheck-2.13.2
-  - hw-kafka-client-3.0.0@sha256:a4757287b765de252f5f183e003eaf63c2c0acda051bdd72fd3f8610ca1f3cee,3172
-  - net-mqtt-0.6.2.3@sha256:3c2201ad7021a07bccd8bb0c64a8450451085ddd03178f2a916e7951d4e7260a,4131
-  - prometheus-2.1.3@sha256:4fdf8602f7c74367cda182cf71dab108f78a86993b428bf96b61dd6c519b6f22,4296
-  - store-0.7.2@sha256:94ca07b2af0ee15ee9e71f1576ea630676c3c016788c3dcb19d33d2998c3c228,7825
-  - store-streaming-0.2.0.0@sha256:f1194a9276362691f2ccc92473f4ebc9e7f7e57131e8f7c20c7c2e4eb264eb70,2006
-  - store-core-0.4.4.2@sha256:11403cad88cf4f3675d49baf76cb5dd56363e786c7e25ef00fa57296af29a7b2,1444
-  - th-utilities-0.2.3.1@sha256:40ebb0bc9569b4ff5c3be93c58a1e2a35e308a7e3effc73f6b324980f53f73fc,1869
+  - connection-0.3.1
+  - hw-kafka-client-3.0.0
+  - net-mqtt-0.6.2.1
+  - network-3.1.0.0
+  - prometheus-2.1.2
+  - socks-0.6.1
+  - store-streaming-0.1.0.0
+  - th-utilities-0.2.3.1
+  - time-compat-1.9.2.2
+  - unagi-chan-0.4.1.0
+  - websockets-0.12.6.1

@@ -1,0 +1,50 @@
+name: striot-gui
+version: 0.1.0.0
+github: "JonnySpruce/striot-gui"
+license: Apache
+author: "Jonny Spruce"
+maintainer: "jspruce94@gmail.com"
+copyright: "2020 Jonny Spruce"
+
+extra-source-files:
+  - README.md
+  - ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+description: Please see the README on GitHub at <https://github.com/jonnyspruce/striot-gui#readme>
+
+dependencies:
+  - aeson >=1.4.6.0
+  - algebraic-graphs >=0.1
+  - base >= 4.9
+  - bytestring >= 0.9.2
+  - striot >=0.1.0.4
+
+library:
+  source-dirs: src
+
+executables:
+  striot-gui-exe:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - striot-gui
+
+tests:
+  striot-gui-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - striot-gui
+      - hspec >=2.6.1
