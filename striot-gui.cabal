@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d594df0084bfe6fa5131a7316755fe54d623f3d0ca9496986c6ef49f093b64b8
+-- hash: af7717a8bf07d6a1b099ca73d20ef1f8a3a95e15af4cf20810966502f9c930c2
 
 name:           striot-gui
 version:        0.1.0.0
@@ -69,7 +69,7 @@ test-suite striot-gui-test
     , algebraic-graphs >=0.1
     , base >=4.9
     , bytestring >=0.9.2
-    , hspec >=2.7.1
+    , hspec >=2.6.1
     , striot >=0.1.0.4
     , striot-gui
   default-language: Haskell2010

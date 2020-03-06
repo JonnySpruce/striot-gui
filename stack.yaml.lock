@@ -26,12 +26,12 @@ packages:
   original:
     hackage: aeson-1.4.6.0
 - completed:
-    hackage: hspec-2.7.1@sha256:0aa48928ce80a34f8ff8c5ef114bb6807edfb8d884bcd7211eceed710e7fb7a8,1769
+    hackage: connection-0.3.1@sha256:65da1c055610095733bcd228d85dff80804b23a5d18fede994a0f9fcd1b0c121,1554
     pantry-tree:
-      size: 532
-      sha256: 8128733a7ef4760bbe5d978f2145fdcb29f4491b17db11e8c05b409441ceecb4
+      size: 386
+      sha256: 13a2c21049e69068e4c3d725533d94729772f2d3e05f5ef611bef28363b08798
   original:
-    hackage: hspec-2.7.1
+    hackage: connection-0.3.1
 - completed:
     hackage: hw-kafka-client-3.0.0@sha256:a4757287b765de252f5f183e003eaf63c2c0acda051bdd72fd3f8610ca1f3cee,3172
     pantry-tree:
@@ -40,19 +40,33 @@ packages:
   original:
     hackage: hw-kafka-client-3.0.0
 - completed:
-    hackage: net-mqtt-0.6.2.3@sha256:3c2201ad7021a07bccd8bb0c64a8450451085ddd03178f2a916e7951d4e7260a,4131
+    hackage: net-mqtt-0.6.2.1@sha256:c1966caaa2b3894f7075450543dcd1f8017db14d06edb927a4f756533bd74398,4131
     pantry-tree:
       size: 700
-      sha256: d8baf796ada475bf15e145bcb316e4d6cd392308deed90be863c6ffc5b82047d
+      sha256: 702147709852ce98ef5bfe0374f3a1ad9f247ac4724151525ca36505dbe70eb3
   original:
-    hackage: net-mqtt-0.6.2.3
+    hackage: net-mqtt-0.6.2.1
 - completed:
-    hackage: prometheus-2.1.3@sha256:4fdf8602f7c74367cda182cf71dab108f78a86993b428bf96b61dd6c519b6f22,4296
+    hackage: network-3.1.0.0@sha256:85b36fea1dfe92af91b38224d6ea84eb0b17c03d9aed0260413be226722b0cd2,4074
+    pantry-tree:
+      size: 3296
+      sha256: 73580e0327c74a22776e1bfcc09aee25769b13de972a94a84a20f522596ebfed
+  original:
+    hackage: network-3.1.0.0
+- completed:
+    hackage: prometheus-2.1.2@sha256:dbd20f6003bd0b4602433b67ced7696322ec486143efc12b1d452dd312152224,3990
     pantry-tree:
       size: 1559
-      sha256: a8d0a0150abddf0d7b673fcb19ff2ef235d4005161826e1538ad802394c9fc0e
+      sha256: 1365a10d00c6c0e14a0c13de2fd281409dbc10416dd7fa74f22bfe4bf7bbfc60
   original:
-    hackage: prometheus-2.1.3
+    hackage: prometheus-2.1.2
+- completed:
+    hackage: socks-0.6.1@sha256:ac190808eea704672df18f702e8f2ad0b7a4d0af528e95ee55ea6ee0be672e2a,1258
+    pantry-tree:
+      size: 692
+      sha256: 53d29c06c42e737ae99660e077c7c4b286f1272b3394ad7f74163867a5b3b8fa
+  original:
+    hackage: socks-0.6.1
 - completed:
     hackage: store-0.7.2@sha256:94ca07b2af0ee15ee9e71f1576ea630676c3c016788c3dcb19d33d2998c3c228,7825
     pantry-tree:
@@ -68,12 +82,12 @@ packages:
   original:
     hackage: store-core-0.4.4.2
 - completed:
-    hackage: store-streaming-0.2.0.0@sha256:f1194a9276362691f2ccc92473f4ebc9e7f7e57131e8f7c20c7c2e4eb264eb70,2006
+    hackage: store-streaming-0.1.0.0@sha256:39d2c8b7960a90195c5f10e60334d1b10324aad01b3470fd8713b7acfdbf9cab,2009
     pantry-tree:
-      size: 479
-      sha256: 1a9236fe7b9d3172197c57d5b879dd15c51b4f825fd788688eafda75074c7ecc
+      size: 478
+      sha256: 171358012384b61ac1f29209898ffa7e2a6fa6d0c89efcb1be89a33b12cecc5e
   original:
-    hackage: store-streaming-0.2.0.0
+    hackage: store-streaming-0.1.0.0
 - completed:
     hackage: th-utilities-0.2.3.1@sha256:40ebb0bc9569b4ff5c3be93c58a1e2a35e308a7e3effc73f6b324980f53f73fc,1869
     pantry-tree:
@@ -81,9 +95,30 @@ packages:
       sha256: fa8f7a729bb497831a087af6368cc44a52bfdf058c54882a6f5513feb4d36212
   original:
     hackage: th-utilities-0.2.3.1
+- completed:
+    hackage: time-compat-1.9.2.2@sha256:ccf268e6ec91a6d9a79392697634c670c095a34a60d1ccfa1be1c84f20bb24c5,4254
+    pantry-tree:
+      size: 3602
+      sha256: f16cc56a43fa6047ad46b23770d5a16b9c400fd8d019e9b010b766a13e8eb588
+  original:
+    hackage: time-compat-1.9.2.2
+- completed:
+    hackage: unagi-chan-0.4.1.0@sha256:818559a286f2041135a92d504e5d6c55a3edf70e080a6d413912e0f1b705b82a,8893
+    pantry-tree:
+      size: 2286
+      sha256: 33e708a19c0d2a70923583924add3b1f71df61d3acdfabccc9511f2d3226bf5a
+  original:
+    hackage: unagi-chan-0.4.1.0
+- completed:
+    hackage: websockets-0.12.6.1@sha256:3816e841d8102877817d24ef5c96288e79f1323434268b866aa40732cc86763f,7649
+    pantry-tree:
+      size: 2592
+      sha256: 39a2bb7273c794e77bbc29cd1a0fa9ed15066bd27818cac88f3ab6d5d1d3220e
+  original:
+    hackage: websockets-0.12.6.1
 snapshots:
 - completed:
-    size: 489011
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/15/1.yaml
-    sha256: d4ecc42b7125d68e4c3c036a08046ad0cd02ae0d9efbe3af2223a00ff8cc16f3
-  original: lts-15.1
+    size: 499461
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/13/25.yaml
+    sha256: aed98969628e20615e96b06083c933c7e3354ae56b08b75e607a26569225d6c0
+  original: lts-13.25
