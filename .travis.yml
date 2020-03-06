@@ -1,6 +1,7 @@
 # Using the default recommended .travis.yml for Haskell Stack, taken from here: https://raw.githubusercontent.com/commercialhaskell/stack/stable/doc/travis-simple.yml
 
 # Choose a build environment
+os: linux
 dist: xenial
 
 # Do not choose a language; we provide our own build tools.
@@ -9,16 +10,22 @@ language: generic
 # Caching so the next build will be fast too.
 cache:
   directories:
+    - $HOME/.ghc
+    - $HOME/.cabal
     - $HOME/.stack
+    - $TRAVIS_BUILD_DIR/.stack-work
 
 # Ensure necessary system libraries are present
 addons:
   apt:
     packages:
       - libgmp-dev
-      - librdkafka-dev
 
 before_install:
+  # install librdkafka-dev
+  - wget -qO - https://packages.confluent.io/deb/5.3/archive.key | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://packages.confluent.io/deb/5.3 stable main"
+  - sudo apt-get update && sudo apt-get install librdkafka-dev
   # Download and unpack the stack executable
   - mkdir -p ~/.local/bin
   - export PATH=$HOME/.local/bin:$PATH
