@@ -2,8 +2,8 @@ module Main where
 
 import           System.Environment
 
-
-import           ToVertex
+import           NRNode
+import           ToStreamGraph
 
 main :: IO ()
 main = do
@@ -11,7 +11,7 @@ main = do
   case args of
     [fileName] -> do
       x <- nodesFromJSON fileName
-      let striotNodes = filterActualNodes x
+      let striotNodes = toStreamGraph x
       putStr (show striotNodes)
     _ -> helpText
 
