@@ -1,15 +1,12 @@
-{-# LANGUAGE OverloadedStrings, DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric #-}
 
-module ToVertex
-  ( toVertex
+module NRNode
+  ( NRNode(..)
   , nodesFromJSON
-  , filterActualNodes
-  , NRNode(..)
+  , getNodeByStrId
   )
 where
 
-import           Striot.CompileIoT
-import           Striot.StreamGraph
 import           Data.Aeson
 import           Data.Maybe
 import           GHC.Generics
@@ -46,7 +43,7 @@ nodesFromJSON x =
 
 -- | Removes all nodes from the array which represent tabs etc.
 filterActualNodes :: [NRNode] -> [NRNode]
-filterActualNodes = filter (isJust . z)
+filterActualNodes = filter (\n -> nodeType n `elem` striotTypes)
 
 -- | Creates StrIoT compatible nodes for each ID, and also creates wires in the same format
 addStrIds :: [NRNode] -> [NRNode]
@@ -67,14 +64,10 @@ getStrId xs id | null results = -1
                | otherwise    = fromJust . strId . head $ results
   where results = filter (\x -> id == nrId x) xs
 
--- | Converts the node to the correct type of Vertex depending on the node type
-toVertex :: NRNode -> StreamVertex
-toVertex n | nodeType n == "filter" = filterVertex n
+-- | Finds a specific node in an array of NRNodes which has the specified strID
+-- TODO: add error handling for if node not found 
+getNodeByStrId :: [NRNode] -> Int -> NRNode
+getNodeByStrId xs i = head . filter (\x -> fromJust (strId x) == i) $ xs
 
--- | converts a node to a filter vertex to be used by StrIoT
-filterVertex :: NRNode -> StreamVertex
-filterVertex x = StreamVertex (fromJust . strId $ x)
-                              Filter
-                              [fromJust (func x), "s"]
-                              "String"
-                              "String"
+striotTypes :: [String]
+striotTypes = ["filter"]
