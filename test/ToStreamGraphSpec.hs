@@ -21,11 +21,9 @@ spec = do
             [ NRNode "780d3bdd.622694"
                      (Just 1)
                      "filter"
-                     Nothing
-                     Nothing
                      (Just "filter :: Int -> Bool\nfilter x = x > 5")
                      Nothing
-                     Nothing
+                     (Just "String")
                      Nothing
                      (Just [[]])
             ]
@@ -41,21 +39,17 @@ spec = do
             [ NRNode "node1"
                      (Just 1)
                      "filter"
-                     Nothing
-                     Nothing
                      (Just "filter :: Int -> Bool\nfilter x = x > 5")
                      Nothing
-                     Nothing
+                     (Just "Int")
                      Nothing
                      (Just [[2]])
             , NRNode "node2"
                      (Just 2)
                      "filter"
-                     Nothing
-                     Nothing
                      (Just "filter :: Int -> Bool\nfilter x = x < 3")
-                     Nothing
-                     Nothing
+                     (Just "Int")
+                     (Just "String")
                      Nothing
                      (Just [[1]])
             ]
@@ -88,5 +82,5 @@ spec = do
 
         -- check the nodes are correctly connected
         let expectedAdjacency =
-              [(v1, [v3]), (v2, [v5]), (v3, [v4]), (v4, []), (v5, [])]
+              [(v1, [v2]), (v2, [v3]), (v3, []), (v4, [v5]), (v5, [])]
         adjacencyList graph `shouldBe` expectedAdjacency

@@ -21,11 +21,9 @@ spec = do
                 "780d3bdd.622694"
                 (Just 1)
                 "filter"
-                (Just "f1bacb78.71c938")
-                (Just "")
                 (Just "filter :: Int -> Bool\nfilter x = x > 5")
-                (Just 360)
-                (Just 180)
+                Nothing
+                (Just "String")
                 (Just [["45a02407.d5b4fc"]])
                 (Just [[]]) -- since it refers to another node outside the document it should be removed
 
@@ -36,32 +34,31 @@ spec = do
       it
           "correctly reads data about each node and discards the unnecessary nodes"
         $ do
-        -- only check two nodes - a non-StrIoT node and a filterNode
+        -- only check two nodes
             let
               expectedNodes =
-                [ NRNode "60ac5717.97d4b8"
-                         (Just 1) -- while there is another node first, it is a tab node so not relevant
-                         "filter"
-                         (Just "d8d488a.0d86178")
-                         (Just "")
-                         (Just "-- node 1\nfilter :: Int -> Bool\n")
-                         (Just 390)
-                         (Just 200)
-                         (Just [["a06f1981.fb6c78"]])
-                         (Just [[3]]) -- The ID above is for the third StrIoT node in the file
+                [ NRNode
+                  "e0124a9b.057a88"
+                  (Just 1) -- while there is another node first, it is a tab node so not relevant
+                  "filter"
+                  (Just
+                    "filter :: Int -> Bool\n-- complete your definition here"
+                  )
+                  Nothing
+                  (Just "Int")
+                  (Just [["a8ad8cf4.7b7a5"]])
+                  (Just [[2]]) -- The ID above is for the second StrIoT node in the file
                 , NRNode
-                  "e930e.ff4cdcf2"
+                  "a8ad8cf4.7b7a5"
                   (Just 2)
                   "filter"
-                  (Just "d8d488a.0d86178")
-                  (Just "")
                   (Just
-                    "-- node 4\nfilter :: Int -> Bool\n-- complete your definition here"
+                    "filter :: Int -> Bool\n-- complete your definition here"
                   )
-                  (Just 480)
-                  (Just 380)
-                  (Just [["8d98e1ee.971af"]])
-                  (Just [[5]])
+                  (Just "Int")
+                  (Just "String")
+                  (Just [["265bc0de.a1e9c"]])
+                  (Just [[3]])
                 ]
 
             n <- nodesFromJSON "test/files/multiple-nodes.json"

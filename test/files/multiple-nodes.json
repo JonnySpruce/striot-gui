@@ -1,1 +1,67 @@
-[{"id":"d8d488a.0d86178","type":"tab","label":"Flow 1","disabled":false,"info":""},{"id":"60ac5717.97d4b8","type":"filter","z":"d8d488a.0d86178","name":"","func":"-- node 1\nfilter :: Int -> Bool\n","x":390,"y":200,"wires":[["a06f1981.fb6c78"]]},{"id":"e930e.ff4cdcf2","type":"filter","z":"d8d488a.0d86178","name":"","func":"-- node 4\nfilter :: Int -> Bool\n-- complete your definition here","x":480,"y":380,"wires":[["8d98e1ee.971af"]]},{"id":"a06f1981.fb6c78","type":"filter","z":"d8d488a.0d86178","name":"","func":"-- node 2\nfilter :: Int -> Bool\n","x":630,"y":200,"wires":[["dae59cf5.2da72"]]},{"id":"dae59cf5.2da72","type":"filter","z":"d8d488a.0d86178","name":"","func":"-- node 3\nfilter :: Int -> Bool\n-- complete your definition here","x":860,"y":180,"wires":[[]]},{"id":"8d98e1ee.971af","type":"filter","z":"d8d488a.0d86178","name":"","func":"-- node 5\nfilter :: Int -> Bool\n-- complete your definition here","x":780,"y":380,"wires":[[]]}]
+[{
+    "id": "9cb93277.b83",
+    "type": "tab",
+    "label": "Flow 1",
+    "disabled": false,
+    "info": ""
+}, {
+    "id": "e0124a9b.057a88",
+    "type": "filter",
+    "z": "9cb93277.b83",
+    "name": "",
+    "func": "filter :: Int -> Bool\n-- complete your definition here",
+    "output": "Int",
+    "x": 400,
+    "y": 320,
+    "wires": [
+        ["a8ad8cf4.7b7a5"]
+    ]
+}, {
+    "id": "a8ad8cf4.7b7a5",
+    "type": "filter",
+    "z": "9cb93277.b83",
+    "name": "",
+    "func": "filter :: Int -> Bool\n-- complete your definition here",
+    "output": "String",
+    "x": 580,
+    "y": 320,
+    "wires": [
+        ["265bc0de.a1e9c"]
+    ]
+}, {
+    "id": "265bc0de.a1e9c",
+    "type": "filter",
+    "z": "9cb93277.b83",
+    "name": "",
+    "func": "filter :: Int -> Bool\n-- complete your definition here",
+    "output": "String",
+    "x": 760,
+    "y": 320,
+    "wires": [
+        []
+    ]
+}, {
+    "id": "202479ba.658296",
+    "type": "filter",
+    "z": "9cb93277.b83",
+    "name": "",
+    "func": "filter :: Int -> Bool\n-- complete your definition here",
+    "output": "String",
+    "x": 480,
+    "y": 420,
+    "wires": [
+        ["c4f9c67c.fcb288"]
+    ]
+}, {
+    "id": "c4f9c67c.fcb288",
+    "type": "filter",
+    "z": "9cb93277.b83",
+    "name": "",
+    "func": "filter :: Int -> Bool\n-- complete your definition here",
+    "output": "String",
+    "x": 680,
+    "y": 420,
+    "wires": [
+        []
+    ]
+}]
