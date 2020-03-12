@@ -1,0 +1,13 @@
+[{
+    "id": "657a589a.efb478",
+    "type": "generic-input",
+    "z": "13b0c4f7.79906b",
+    "name": "",
+    "func": "do\n    threadDelay (1000*1000)\n    return \"Hello World!\"",
+    "output": "String",
+    "x": 160,
+    "y": 320,
+    "wires": [
+        []
+    ]
+}]

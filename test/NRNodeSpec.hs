@@ -27,7 +27,25 @@ spec = do
                 (Just [["45a02407.d5b4fc"]])
                 (Just [[]]) -- since it refers to another node outside the document it should be removed
 
-          nodesFromJSON "test/files/single-node.json"
+          nodesFromJSON "test/files/single-node/filter.json"
+            `shouldReturn` [expectedNode]
+
+      describe "(generic input node)" $ do
+        it "correctly reads the data about the node" $ do
+          let
+            expectedNode = NRNode
+              "657a589a.efb478"
+              (Just 1)
+              "generic-input"
+              (Just
+                "do\n    threadDelay (1000*1000)\n    return \"Hello World!\""
+              )
+              Nothing
+              (Just "String")
+              (Just [[]])
+              (Just [[]])
+
+          nodesFromJSON "test/files/single-node/generic-input.json"
             `shouldReturn` [expectedNode]
 
     describe "on multiple nodes" $ do
@@ -38,32 +56,42 @@ spec = do
             let
               expectedNodes =
                 [ NRNode
-                  "e0124a9b.057a88"
+                  "53d73312.aa3aec"
                   (Just 1) -- while there is another node first, it is a tab node so not relevant
-                  "filter"
+                  "generic-input"
                   (Just
-                    "filter :: Int -> Bool\n-- complete your definition here"
+                    "do\n    threadDelay (1000*1000)\n    return \"Hello World!\""
                   )
                   Nothing
-                  (Just "Int")
-                  (Just [["a8ad8cf4.7b7a5"]])
-                  (Just [[2]]) -- The ID above is for the second StrIoT node in the file
-                , NRNode
-                  "a8ad8cf4.7b7a5"
-                  (Just 2)
-                  "filter"
-                  (Just
-                    "filter :: Int -> Bool\n-- complete your definition here"
-                  )
-                  (Just "Int")
                   (Just "String")
-                  (Just [["265bc0de.a1e9c"]])
-                  (Just [[3]])
+                  (Just [["e2841e3f.0d379"]])
+                  (Just [[2]]) -- The ID above is for the second StrIoT node in the file
+                , NRNode "e2841e3f.0d379"
+                         (Just 2)
+                         "filter"
+                         (Just "(\\i -> (read i :: Int) > 5)")
+                         (Just "String")
+                         (Just "String")
+                         (Just [["fad96b10.65b4a8"]])
+                         (Just [[3]])
                 ]
 
-            n <- nodesFromJSON "test/files/multiple-nodes.json"
+            n <- nodesFromJSON "test/files/multiple-node-types.json"
             -- check that all nodes have been added
-            length n `shouldBe` 5
+            length n `shouldBe` 3
 
             let actualNodes = take 2 n
             actualNodes `shouldBe` expectedNodes
+
+      it
+          "correctly determines the input types based on the previous node's output type"
+        $ do
+            nodes <- nodesFromJSON "test/files/complex-connections.json"
+            print nodes
+            let (n1 : n2 : _) = nodes
+
+            input n1 `shouldBe` Nothing
+            output n1 `shouldBe` Just "Int"
+
+            input n2 `shouldBe` Just "Int"
+            output n2 `shouldBe` Just "String"

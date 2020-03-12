@@ -79,7 +79,7 @@ spec = do
 
     describe "with multiple nodes" $ do
       it "adds the nodes and their connections to the graph" $ do
-        nodes <- nodesFromJSON "test/files/multiple-nodes.json"
+        nodes <- nodesFromJSON "test/files/complex-connections.json"
         let graph                = toStreamGraph nodes
         let [v1, v2, v3, v4, v5] = vertexList graph
 
