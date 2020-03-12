@@ -21,52 +21,77 @@ spec = do
                 "780d3bdd.622694"
                 (Just 1)
                 "filter"
-                (Just "f1bacb78.71c938")
-                (Just "")
                 (Just "filter :: Int -> Bool\nfilter x = x > 5")
-                (Just 360)
-                (Just 180)
+                Nothing
+                (Just "String")
                 (Just [["45a02407.d5b4fc"]])
                 (Just [[]]) -- since it refers to another node outside the document it should be removed
 
-          nodesFromJSON "test/files/single-node.json"
+          nodesFromJSON "test/files/single-node/filter.json"
+            `shouldReturn` [expectedNode]
+
+      describe "(generic input node)" $ do
+        it "correctly reads the data about the node" $ do
+          let
+            expectedNode = NRNode
+              "657a589a.efb478"
+              (Just 1)
+              "generic-input"
+              (Just
+                "do\n    threadDelay (1000*1000)\n    return \"Hello World!\""
+              )
+              Nothing
+              (Just "String")
+              (Just [[]])
+              (Just [[]])
+
+          nodesFromJSON "test/files/single-node/generic-input.json"
             `shouldReturn` [expectedNode]
 
     describe "on multiple nodes" $ do
       it
           "correctly reads data about each node and discards the unnecessary nodes"
         $ do
-        -- only check two nodes - a non-StrIoT node and a filterNode
+        -- only check two nodes
             let
               expectedNodes =
-                [ NRNode "60ac5717.97d4b8"
-                         (Just 1) -- while there is another node first, it is a tab node so not relevant
-                         "filter"
-                         (Just "d8d488a.0d86178")
-                         (Just "")
-                         (Just "-- node 1\nfilter :: Int -> Bool\n")
-                         (Just 390)
-                         (Just 200)
-                         (Just [["a06f1981.fb6c78"]])
-                         (Just [[3]]) -- The ID above is for the third StrIoT node in the file
-                , NRNode
-                  "e930e.ff4cdcf2"
-                  (Just 2)
-                  "filter"
-                  (Just "d8d488a.0d86178")
-                  (Just "")
+                [ NRNode
+                  "53d73312.aa3aec"
+                  (Just 1) -- while there is another node first, it is a tab node so not relevant
+                  "generic-input"
                   (Just
-                    "-- node 4\nfilter :: Int -> Bool\n-- complete your definition here"
+                    "do\n    threadDelay (1000*1000)\n    return \"Hello World!\""
                   )
-                  (Just 480)
-                  (Just 380)
-                  (Just [["8d98e1ee.971af"]])
-                  (Just [[5]])
+                  Nothing
+                  (Just "String")
+                  (Just [["e2841e3f.0d379"]])
+                  (Just [[2]]) -- The ID above is for the second StrIoT node in the file
+                , NRNode "e2841e3f.0d379"
+                         (Just 2)
+                         "filter"
+                         (Just "(\\i -> (read i :: Int) > 5)")
+                         (Just "String")
+                         (Just "String")
+                         (Just [["fad96b10.65b4a8"]])
+                         (Just [[3]])
                 ]
 
-            n <- nodesFromJSON "test/files/multiple-nodes.json"
+            n <- nodesFromJSON "test/files/multiple-node-types.json"
             -- check that all nodes have been added
-            length n `shouldBe` 5
+            length n `shouldBe` 3
 
             let actualNodes = take 2 n
             actualNodes `shouldBe` expectedNodes
+
+      it
+          "correctly determines the input types based on the previous node's output type"
+        $ do
+            nodes <- nodesFromJSON "test/files/complex-connections.json"
+            print nodes
+            let (n1 : n2 : _) = nodes
+
+            input n1 `shouldBe` Nothing
+            output n1 `shouldBe` Just "Int"
+
+            input n2 `shouldBe` Just "Int"
+            output n2 `shouldBe` Just "String"

@@ -21,12 +21,10 @@ spec = do
             [ NRNode "780d3bdd.622694"
                      (Just 1)
                      "filter"
-                     Nothing
-                     Nothing
                      (Just "filter :: Int -> Bool\nfilter x = x > 5")
                      Nothing
-                     Nothing
-                     Nothing
+                     (Just "String")
+                     (Just [[]])
                      (Just [[]])
             ]
       let graph = toStreamGraph nodes
@@ -41,24 +39,21 @@ spec = do
             [ NRNode "node1"
                      (Just 1)
                      "filter"
-                     Nothing
-                     Nothing
                      (Just "filter :: Int -> Bool\nfilter x = x > 5")
                      Nothing
-                     Nothing
-                     Nothing
+                     (Just "Int")
+                     (Just [["node2"]])
                      (Just [[2]])
             , NRNode "node2"
                      (Just 2)
                      "filter"
-                     Nothing
-                     Nothing
                      (Just "filter :: Int -> Bool\nfilter x = x < 3")
-                     Nothing
-                     Nothing
-                     Nothing
+                     (Just "Int")
+                     (Just "String")
+                     (Just [["node1"]])
                      (Just [[1]])
             ]
+
       let graph    = toStreamGraph nodes
       let [v1, v2] = vertexList graph
 
@@ -72,13 +67,19 @@ spec = do
         adjacencyList graph `shouldBe` expectedAdjacency
 
 
-      it "adds the correct type of StreamOperator based on the node type" $ do
+      it "created a StreamVertex with the correct parameters" $ do
         operator v1 `shouldBe` Filter
         operator v2 `shouldBe` Filter
 
+        intype v1 `shouldBe` "String"
+        intype v2 `shouldBe` "Int"
+
+        outtype v1 `shouldBe` "Int"
+        outtype v2 `shouldBe` "String"
+
     describe "with multiple nodes" $ do
       it "adds the nodes and their connections to the graph" $ do
-        nodes <- nodesFromJSON "test/files/multiple-nodes.json"
+        nodes <- nodesFromJSON "test/files/complex-connections.json"
         let graph                = toStreamGraph nodes
         let [v1, v2, v3, v4, v5] = vertexList graph
 
@@ -88,5 +89,5 @@ spec = do
 
         -- check the nodes are correctly connected
         let expectedAdjacency =
-              [(v1, [v3]), (v2, [v5]), (v3, [v4]), (v4, []), (v5, [])]
+              [(v1, [v2]), (v2, [v3]), (v3, []), (v4, [v5]), (v5, [])]
         adjacencyList graph `shouldBe` expectedAdjacency
