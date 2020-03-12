@@ -34,12 +34,13 @@ fromEdgeList = foldr (overlay . edge) empty
 
 -- | Converts the node to the correct type of Vertex depending on the node type
 toVertex :: NRNode -> StreamVertex
-toVertex n | nodeType n == "filter" = filterVertex n
+toVertex n = case nodeType n of
+  "filter" -> toVertex' n Filter [fromMaybe "" (func n), "s"]
 
--- | converts a node to a filter vertex to be used by StrIoT
-filterVertex :: NRNode -> StreamVertex
-filterVertex x = StreamVertex (fromJust . strId $ x)
-                              Filter
-                              [fromJust (func x), "s"]
-                              "String"
-                              "String"
+-- | converts a node to a specific StreamVertex to be used by StrIoT
+toVertex' :: NRNode -> StreamOperator -> [String] -> StreamVertex
+toVertex' n o xs = StreamVertex (fromJust . strId $ n)
+                                o
+                                xs
+                                (fromMaybe "String" (input n))
+                                (fromMaybe "String" (output n))

@@ -24,7 +24,7 @@ spec = do
                      (Just "filter :: Int -> Bool\nfilter x = x > 5")
                      Nothing
                      (Just "String")
-                     Nothing
+                     (Just [[]])
                      (Just [[]])
             ]
       let graph = toStreamGraph nodes
@@ -42,7 +42,7 @@ spec = do
                      (Just "filter :: Int -> Bool\nfilter x = x > 5")
                      Nothing
                      (Just "Int")
-                     Nothing
+                     (Just [["node2"]])
                      (Just [[2]])
             , NRNode "node2"
                      (Just 2)
@@ -50,9 +50,10 @@ spec = do
                      (Just "filter :: Int -> Bool\nfilter x = x < 3")
                      (Just "Int")
                      (Just "String")
-                     Nothing
+                     (Just [["node1"]])
                      (Just [[1]])
             ]
+
       let graph    = toStreamGraph nodes
       let [v1, v2] = vertexList graph
 
@@ -66,9 +67,15 @@ spec = do
         adjacencyList graph `shouldBe` expectedAdjacency
 
 
-      it "adds the correct type of StreamOperator based on the node type" $ do
+      it "created a StreamVertex with the correct parameters" $ do
         operator v1 `shouldBe` Filter
         operator v2 `shouldBe` Filter
+
+        intype v1 `shouldBe` "String"
+        intype v2 `shouldBe` "Int"
+
+        outtype v1 `shouldBe` "Int"
+        outtype v2 `shouldBe` "String"
 
     describe "with multiple nodes" $ do
       it "adds the nodes and their connections to the graph" $ do
