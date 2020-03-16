@@ -1,43 +1,41 @@
 [{
-    "id": "750cd9a7.1e9928",
+    "id": "23598ab3.6b1e16",
     "type": "tab",
     "label": "Flow 1",
     "disabled": false,
     "info": ""
 }, {
-    "id": "53d73312.aa3aec",
+    "id": "5f773d75.f7a804",
     "type": "generic-input",
-    "z": "750cd9a7.1e9928",
-    "name": "",
-    "func": "do\n    threadDelay (1000*1000)\n    return \"Hello World!\"",
+    "z": "23598ab3.6b1e16",
+    "name": "Random number generator",
+    "func": "do\n    i <- getStdRandom (randomR (1,10)) :: IO Int\n    let s = show i in do\n        threadDelay 1000000\n        putStrLn $ \"client sending \" ++ s\n        return s",
     "output": "String",
-    "x": 160,
-    "y": 280,
+    "x": 150,
+    "y": 380,
     "wires": [
-        ["e2841e3f.0d379"]
+        ["f196f84d.7140e8"]
     ]
 }, {
-    "id": "e2841e3f.0d379",
+    "id": "f196f84d.7140e8",
     "type": "filter",
-    "z": "750cd9a7.1e9928",
+    "z": "23598ab3.6b1e16",
     "name": "",
     "func": "(\\i -> (read i :: Int) > 5)",
     "output": "String",
-    "x": 400,
-    "y": 280,
+    "x": 350,
+    "y": 380,
     "wires": [
-        ["fad96b10.65b4a8"]
+        ["6be7f1eb.edafc"]
     ]
 }, {
-    "id": "fad96b10.65b4a8",
-    "type": "filter",
-    "z": "750cd9a7.1e9928",
+    "id": "6be7f1eb.edafc",
+    "type": "sink",
+    "z": "23598ab3.6b1e16",
     "name": "",
-    "func": "(\\i -> (read i :: Int) < 8)",
-    "output": "String",
-    "x": 550,
-    "y": 280,
-    "wires": [
-        []
-    ]
+    "func": "mapM_ $ putStrLn . (\"receiving \"++) . show . value",
+    "output": "IO ()",
+    "x": 490,
+    "y": 380,
+    "wires": []
 }]

@@ -88,4 +88,4 @@ getInputType xs n = case inputs of
 
 
 striotTypes :: [String]
-striotTypes = ["filter", "generic-input"]
+striotTypes = ["filter", "generic-input", "sink"]

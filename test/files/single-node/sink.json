@@ -1,0 +1,11 @@
+[{
+    "id": "6be7f1eb.edafc",
+    "type": "sink",
+    "z": "23598ab3.6b1e16",
+    "name": "",
+    "func": "mapM_ $ putStrLn . (\"receiving \"++) . show . value",
+    "output": "IO ()",
+    "x": 490,
+    "y": 380,
+    "wires": []
+}]
