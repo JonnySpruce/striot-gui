@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: af7717a8bf07d6a1b099ca73d20ef1f8a3a95e15af4cf20810966502f9c930c2
+-- hash: beeb5fd969c79a4a2f1762da80b741a5efe2dbbc81a11ab5da1e809cf8cbb138
 
 name:           striot-gui
 version:        0.1.0.0
@@ -27,7 +27,8 @@ source-repository head
 
 library
   exposed-modules:
-      ToVertex
+      NRNode
+      ToStreamGraph
   other-modules:
       Paths_striot_gui
   hs-source-dirs:
@@ -60,6 +61,8 @@ test-suite striot-gui-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      NRNodeSpec
+      ToStreamGraphSpec
       Paths_striot_gui
   hs-source-dirs:
       test

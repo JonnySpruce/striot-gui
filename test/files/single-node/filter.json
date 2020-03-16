@@ -4,6 +4,7 @@
     "z": "f1bacb78.71c938",
     "name": "",
     "func": "filter :: Int -> Bool\nfilter x = x > 5",
+    "output": "String",
     "x": 360,
     "y": 180,
     "wires": [
