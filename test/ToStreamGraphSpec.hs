@@ -26,6 +26,9 @@ spec = do
                      (Just "String")
                      (Just [[]])
                      (Just [[]])
+                     Nothing
+                     Nothing
+                     Nothing
             ]
       let graph = toStreamGraph nodes
 
@@ -44,6 +47,9 @@ spec = do
                      (Just "Int")
                      (Just [["node2"]])
                      (Just [[2]])
+                     Nothing
+                     Nothing
+                     Nothing
             , NRNode "node2"
                      (Just 2)
                      "filter"
@@ -52,6 +58,9 @@ spec = do
                      (Just "String")
                      (Just [["node1"]])
                      (Just [[1]])
+                     Nothing
+                     Nothing
+                     Nothing
             ]
 
       let graph    = toStreamGraph nodes
@@ -91,3 +100,12 @@ spec = do
         let expectedAdjacency =
               [(v1, [v2]), (v2, [v3]), (v3, []), (v4, [v5]), (v5, [])]
         adjacencyList graph `shouldBe` expectedAdjacency
+
+    describe "with generation-options node" $ do
+      it "should not be included in the created StreamGraph" $ do
+        nodes <- nodesFromJSON "test/files/multiple-node-types.json"
+        let graph = toStreamGraph nodes
+
+        -- check the counts are as expected (i.e. generation-settings node not included)
+        vertexCount graph `shouldBe` 3
+        edgeCount graph `shouldBe` 2

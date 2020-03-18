@@ -4,12 +4,15 @@ module NRNode
   ( NRNode(..)
   , nodesFromJSON
   , getNodeByStrId
+  , getStrIoTGenerateOpts
   )
 where
 
 import           Data.Aeson
 import           Data.Maybe
 import           GHC.Generics
+import           Data.List.Split
+import qualified Striot.CompileIoT             as C
 import qualified Data.ByteString.Lazy          as B
 
 -- | NRNode - the Haskell data representation of Node-RED nodes
@@ -22,6 +25,9 @@ data NRNode =
          , output :: Maybe String
          , wires :: Maybe [[String]]
          , strWires :: Maybe [[Int]]
+         , imports :: Maybe String
+         , packages :: Maybe String
+         , optimise :: Maybe Bool
     } deriving (Generic, Show, Eq)
 
 -- Defines how to read the JSON object and convert into the NRNode
@@ -86,6 +92,32 @@ getInputType xs n = case inputs of
     (\x -> (fromJust . strId $ n) `elem` (concat . fromJust . strWires $ x))
     xs
 
+-- | Creates a GenerateOpts datatype from a list of NRNodes (where one is the 'generation-options node type')
+getStrIoTGenerateOpts :: [NRNode] -> C.GenerateOpts
+getStrIoTGenerateOpts xs = toStrIoTGenerateOpts optsNode
+ where
+  optsNode = fromMaybe (error "No generation-options node found")
+                       (getGenerationOptsNode xs)
+
+-- | Gets the generation settings node from a list of nodes 
+getGenerationOptsNode :: [NRNode] -> Maybe NRNode
+getGenerationOptsNode xs = case results of
+  [] -> Nothing
+  _  -> Just . head $ results
+  where results = filter (\x -> "generation-options" == nodeType x) xs
+
+toStrIoTGenerateOpts :: NRNode -> C.GenerateOpts
+toStrIoTGenerateOpts x
+  | nodeType x == "generation-options" = C.GenerateOpts
+    (map (unwords . words) (endBy "," $ fromJust . imports $ x))
+    (map (unwords . words) (endBy "," $ fromJust . packages $ x))
+    ps
+    (fromJust . optimise $ x)
+  | otherwise = error "Node must be of type 'generation-options'"
+ where
+  ps        = if preSource == "" then Nothing else Just preSource
+  preSource = fromJust (func x)
+
 
 striotTypes :: [String]
-striotTypes = ["filter", "generic-input", "sink"]
+striotTypes = ["filter", "generic-input", "sink", "generation-options"]

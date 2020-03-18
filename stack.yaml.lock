@@ -68,6 +68,13 @@ packages:
   original:
     hackage: socks-0.6.1
 - completed:
+    hackage: split-0.2.3.4@sha256:bad9bfc9e8e0aca4ac1f7b3a2767ee6b1c199d4a1b6960db5cc3d7674aee5d73,2564
+    pantry-tree:
+      size: 439
+      sha256: d931baa404f6867a23ed342c11ef27613227a7a82ba2324f95da184fffad0bd9
+  original:
+    hackage: split-0.2.3.4
+- completed:
     hackage: store-streaming-0.1.0.0@sha256:39d2c8b7960a90195c5f10e60334d1b10324aad01b3470fd8713b7acfdbf9cab,2009
     pantry-tree:
       size: 478
