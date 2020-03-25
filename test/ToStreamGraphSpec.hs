@@ -109,3 +109,14 @@ spec = do
         -- check the counts are as expected (i.e. generation-settings node not included)
         vertexCount graph `shouldBe` 3
         edgeCount graph `shouldBe` 2
+
+  describe "partition" $ do
+    it "separates the main nodes from the sink nodes" $ do
+      nodes <- nodesFromJSON "test/files/multiple-node-types.json"
+      let part = partition nodes
+
+      length part `shouldBe` 2
+
+      -- index starts at 2 because the generations-options node should be removed
+      head part `shouldBe` [2, 3]
+      part !! 1 `shouldBe` [4]

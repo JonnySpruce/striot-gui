@@ -2,6 +2,7 @@
 
 module ToStreamGraph
   ( toStreamGraph
+  , partition
   )
 where
 
@@ -46,3 +47,10 @@ toVertex' n o xs = StreamVertex (fromJust . strId $ n)
                                 xs
                                 (fromMaybe "String" (input n))
                                 (fromMaybe "String" (output n))
+
+partition :: [NRNode] -> [[Int]]
+partition xs = [getIds partL, getIds partR]
+ where
+  getIds = map (fromJust . strId)
+  partL  = filter (\x -> nodeType x `notElem` ["sink", "generation-options"]) xs
+  partR  = filter (\x -> "sink" == nodeType x) xs
