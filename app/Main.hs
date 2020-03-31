@@ -1,6 +1,7 @@
 module Main where
 
 import           System.Environment
+import           Striot.CompileIoT
 
 import           NRNode
 import           ToStreamGraph
@@ -10,10 +11,13 @@ main = do
   args <- getArgs
   case args of
     [fileName] -> do
-      x <- nodesFromJSON fileName
-      let striotNodes = toStreamGraph x
-      putStr (show striotNodes)
+      nodes <- nodesFromJSON fileName
+      let graph = toStreamGraph nodes
+          part  = partition nodes
+          opts  = getStrIoTGenerateOpts nodes
+      partitionGraph graph part opts
+
     _ -> helpText
 
 helpText :: IO ()
-helpText = putStrLn "Usage: haskell-gui /path/to/node-red/export"
+helpText = putStrLn "Usage: striot-gui-exe /path/to/node-red/export"
