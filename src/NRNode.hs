@@ -112,7 +112,7 @@ toStrIoTGenerateOpts x
     (map (unwords . words) (endBy "," $ fromJust . imports $ x))
     (map (unwords . words) (endBy "," $ fromJust . packages $ x))
     ps
-    (fromJust . optimise $ x)
+    (fromMaybe True . optimise $ x)
   | otherwise = error "Node must be of type 'generation-options'"
  where
   ps        = if preSource == "" then Nothing else Just preSource
