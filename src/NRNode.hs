@@ -120,4 +120,4 @@ toStrIoTGenerateOpts x
 
 
 striotTypes :: [String]
-striotTypes = ["filter", "generic-input", "sink", "generation-options"]
+striotTypes = ["filter", "generic-input", "sink", "generation-options", "map"]
