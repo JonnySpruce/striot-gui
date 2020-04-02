@@ -54,6 +54,23 @@ spec = do
           nodesFromJSON "test/files/single-node/generic-input.json"
             `shouldReturn` [expectedNode]
 
+      describe "(map node)" $ do
+        it "correctly reads the data about the node" $ do
+          let expectedNode = NRNode "7636fdb9.9e7604"
+                                    (Just 1)
+                                    "map"
+                                    (Just "(\\num -> num*2)")
+                                    Nothing
+                                    (Just "Int")
+                                    (Just [[]])
+                                    (Just [[]])
+                                    Nothing
+                                    Nothing
+                                    Nothing
+
+          nodesFromJSON "test/files/single-node/map.json"
+            `shouldReturn` [expectedNode]
+
       describe "(sink node)" $ do
         it "correctly reads the data about the node" $ do
           let expectedNode = NRNode

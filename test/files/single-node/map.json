@@ -1,0 +1,13 @@
+[{
+    "id": "7636fdb9.9e7604",
+    "type": "map",
+    "z": "1c3fdf13.bd7a81",
+    "name": "",
+    "func": "(\\num -> num*2)",
+    "output": "Int",
+    "x": 710,
+    "y": 320,
+    "wires": [
+        []
+    ]
+}]

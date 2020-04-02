@@ -39,6 +39,7 @@ toVertex n = case nodeType n of
   "filter"        -> toVertex' n Filter [fromMaybe "" (func n), "s"]
   "generic-input" -> toVertex' n Source [fromMaybe "" (func n)]
   "sink"          -> toVertex' n Sink [fromMaybe "" (func n)]
+  "map"           -> toVertex' n Map [fromMaybe "" (func n), "s"]
 
 -- | converts a node to a specific StreamVertex to be used by StrIoT
 toVertex' :: NRNode -> StreamOperator -> [String] -> StreamVertex
