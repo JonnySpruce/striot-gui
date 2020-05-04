@@ -9,16 +9,7 @@ module NRNode
 where
 
 import           Data.Aeson
--- import           Data.Aeson.Internal
--- import           Data.Aeson.Internal.Time
-import           Data.Aeson.Parser
--- import           Data.Aeson.Parser.Internal
-import           Data.Aeson.Types
--- import           Data.Aeson.Encoding
--- import           Data.Aeson.Encoding.Internal
--- import           Data.Aeson.QQ.Simple
--- import           Data.Aeson.Text
--- import           Data.Aeson.TH
+import           Control.Applicative
 import           Data.Maybe
 import           Data.Either
 import           GHC.Generics
@@ -29,41 +20,36 @@ import qualified Data.ByteString.Lazy          as B
 -- | NRNode - the Haskell data representation of Node-RED nodes
 data NRNode =
     NRNode { nrId :: String -- Node-RED ID - as it comes from Node-RED
-         , strId :: Maybe Int -- StrIoT ID - unique ID that can then be used for creating Vertices for StrIoT
+         , strId :: Int -- StrIoT ID - unique ID that can then be used for creating Vertices for StrIoT
          , nodeType :: String
-         , func :: Maybe String
+         , func :: String
          , input :: Maybe String
          , output :: Maybe String
-         , wires :: Maybe [[String]]
-         , strWires :: Maybe [[Int]]
-         , imports :: Maybe String
-         , packages :: Maybe String
-         , optimise :: Maybe Bool
+         , wires :: [[String]]
+         , strWires :: [[Int]]
+         , imports :: String
+         , packages :: String
+         , optimise :: Bool
     } deriving (Generic, Show, Eq)
 
 -- Defines how to read the JSON object and convert into the NRNode
+-- The optimise line is different because Node-RED outputs true (bool) for True, and '' (string) for False. 
+--    Aeson cannot easily handle both Bool and String for the same field, so using <|> (which acts as a catch in 
+--    a conversion failure) then having a field which is guaranteed to not be found is the best workaround for this
 instance FromJSON NRNode where
-  parseJSON = genericParseJSON defaultOptions
-    { fieldLabelModifier = \x -> case x of
-                             "nrId"     -> "id"
-                             "nodeType" -> "type"
-                             _          -> x
-    }
-
--- instance FromJSON NRNode where
---   parseJSON = withObject "nrnode" $ \o -> do
---     nrId     <- o .: "id"
---     strId    <- o .:? "strId" .!= (-1)
---     nodeType <- o .: "type"
---     func     <- o .:? "func" .!= ""
---     input    <- o .:? "input" .!= ""
---     output   <- o .:? "output" .!= ""
---     wires    <- o .:? "wires" .!= []
---     strWires <- o .:? "strWires" .!= []
---     imports  <- o .:? "imports" .!= ""
---     packages <- o .:? "packages" .!= ""
---     optimise <- o .:? "optimise" .!= False
---     return NRNode { .. }
+  parseJSON = withObject "nrnode" $ \o -> do
+    nrId     <- o .: "id"
+    strId    <- o .:? "strId" .!= (-1)
+    nodeType <- o .: "type"
+    func     <- o .:? "func" .!= ""
+    input    <- o .:? "input" .!= Nothing
+    output   <- o .:? "output" .!= Nothing
+    wires    <- o .:? "wires" .!= []
+    strWires <- o .:? "strWires" .!= []
+    imports  <- o .:? "imports" .!= ""
+    packages <- o .:? "packages" .!= ""
+    optimise <- o .:? "optimise" .!= False <|> o .:? "" .!= False
+    return NRNode { .. }
 
 
 -- | Reads the specified file and converts into an array of NRNodes
@@ -82,7 +68,7 @@ filterActualNodes = filter (\n -> nodeType n `elem` striotTypes)
 
 -- | Creates StrIoT compatible nodes for each ID, and also creates wires in the same format
 addStrIds :: [NRNode] -> [NRNode]
-addStrIds = updateStrWires . zipWith (\id x -> x { strId = Just id }) [1 ..]
+addStrIds = updateStrWires . zipWith (\id x -> x { strId = id }) [1 ..]
 
 addInputType :: [NRNode] -> [NRNode]
 addInputType xs = map (\x -> x { input = getInputType xs x }) xs
@@ -91,17 +77,14 @@ addInputType xs = map (\x -> x { input = getInputType xs x }) xs
 -- | Also removes any references which are not found in the list of IDs (0 or less)
 updateStrWires :: [NRNode] -> [NRNode]
 updateStrWires xs = map
-  (\x -> x
-    { strWires = Just (map (filter (> 0) . map getId) (fromMaybe [] (wires x)))
-    }
-  )
+  (\x -> x { strWires = map (filter (> 0) . map getId) (wires x) })
   xs
   where getId = getStrId xs
 
 -- | Tries to find the StrId for a Node given its NrID
 getStrId :: [NRNode] -> String -> Int
 getStrId xs id | null results = -1
-               | otherwise    = fromMaybe (-1) . strId . head $ results
+               | otherwise    = strId . head $ results
   where results = filter (\x -> id == nrId x) xs
 
 -- | Finds a specific node in an array of NRNodes which has the specified strID
@@ -110,20 +93,14 @@ getNodeByStrId :: [NRNode] -> Int -> NRNode
 getNodeByStrId xs i = case results of
   []      -> error ("No node found with ID " ++ show i)
   (x : _) -> x
-  where results = filter (maybe False (i ==) . strId) xs
+  where results = filter ((i ==) . strId) xs
 
 -- | Finds the input type for a specified node by finding the input node and returning the type
 getInputType :: [NRNode] -> NRNode -> Maybe String
 getInputType xs n = case inputs of
   [] -> Nothing
   _  -> output . head $ inputs
- where
-  inputs = filter
-    (\x ->
-      (fromMaybe (error "Node does not have strId") . strId $ n)
-        `elem` (maybe [] concat . strWires $ x)
-    )
-    xs
+  where inputs = filter (\x -> strId n `elem` (concat . strWires $ x)) xs
 
 -- | Creates a GenerateOpts datatype from a list of NRNodes (where one is the 'generation-options node type')
 getStrIoTGenerateOpts :: [NRNode] -> C.GenerateOpts
@@ -142,14 +119,12 @@ getGenerationOptsNode xs = case results of
 toStrIoTGenerateOpts :: NRNode -> C.GenerateOpts
 toStrIoTGenerateOpts x
   | nodeType x == "generation-options" = C.GenerateOpts
-    (map (unwords . words) (endBy "," $ fromMaybe "" . imports $ x))
-    (map (unwords . words) (endBy "," $ fromMaybe "" . packages $ x))
+    (map (unwords . words) (endBy "," $ imports x))
+    (map (unwords . words) (endBy "," $ packages x))
     ps
-    (fromMaybe False . optimise $ x)
+    (optimise x)
   | otherwise = error "Node must be of type 'generation-options'"
- where
-  ps        = if preSource == "" then Nothing else Just preSource
-  preSource = fromJust (func x)
+  where ps = if func x == "" then Nothing else Just (func x)
 
 
 striotTypes :: [String]

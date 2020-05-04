@@ -17,39 +17,35 @@ spec = do
     describe "on a single node" $ do
       describe "(filter node)" $ do
         it "correctly reads the data about the node" $ do
-          let expectedNode = NRNode
-                "780d3bdd.622694"
-                (Just 1)
-                "filter"
-                (Just "filter :: Int -> Bool\nfilter x = x > 5")
-                Nothing
-                (Just "String")
-                (Just [["45a02407.d5b4fc"]])
-                (Just [[]]) -- since it refers to another node outside the document it should be removed
-                Nothing
-                Nothing
-                Nothing
+          let expectedNode = NRNode "780d3bdd.622694"
+                                    1
+                                    "filter"
+                                    "filter :: Int -> Bool\nfilter x = x > 5"
+                                    Nothing
+                                    (Just "String")
+                                    [["45a02407.d5b4fc"]]
+                                    [[]] -- since it refers to another node outside the document it should be removed
+                                    ""
+                                    ""
+                                    False
 
           nodesFromJSON "test/files/single-node/filter.json"
             `shouldReturn` [expectedNode]
 
       describe "(generic input node)" $ do
         it "correctly reads the data about the node" $ do
-          let
-            expectedNode = NRNode
-              "657a589a.efb478"
-              (Just 1)
-              "generic-input"
-              (Just
+          let expectedNode = NRNode
+                "657a589a.efb478"
+                1
+                "generic-input"
                 "do\n    threadDelay (1000*1000)\n    return \"Hello World!\""
-              )
-              Nothing
-              (Just "String")
-              (Just [[]])
-              (Just [[]])
-              Nothing
-              Nothing
-              Nothing
+                Nothing
+                (Just "String")
+                [[]]
+                [[]]
+                ""
+                ""
+                False
 
           nodesFromJSON "test/files/single-node/generic-input.json"
             `shouldReturn` [expectedNode]
@@ -57,16 +53,16 @@ spec = do
       describe "(map node)" $ do
         it "correctly reads the data about the node" $ do
           let expectedNode = NRNode "7636fdb9.9e7604"
-                                    (Just 1)
+                                    1
                                     "map"
-                                    (Just "(\\num -> num*2)")
+                                    "(\\num -> num*2)"
                                     Nothing
                                     (Just "Int")
-                                    (Just [[]])
-                                    (Just [[]])
-                                    Nothing
-                                    Nothing
-                                    Nothing
+                                    [[]]
+                                    [[]]
+                                    ""
+                                    ""
+                                    False
 
           nodesFromJSON "test/files/single-node/map.json"
             `shouldReturn` [expectedNode]
@@ -75,16 +71,16 @@ spec = do
         it "correctly reads the data about the node" $ do
           let expectedNode = NRNode
                 "6be7f1eb.edafc"
-                (Just 1)
+                1
                 "sink"
-                (Just "mapM_ $ putStrLn . (\"receiving \"++) . show . value")
+                "mapM_ $ putStrLn . (\"receiving \"++) . show . value"
                 Nothing
                 (Just "IO ()")
-                (Just [])
-                (Just [])
-                Nothing
-                Nothing
-                Nothing
+                []
+                []
+                ""
+                ""
+                False
 
           nodesFromJSON "test/files/single-node/sink.json"
             `shouldReturn` [expectedNode]
@@ -93,18 +89,16 @@ spec = do
         let
           expectedNode = NRNode
             "4b18bbc2.dcad64"
-            (Just 1)
+            1
             "generation-options"
-            (Just "-- code goes here")
+            "-- code goes here"
             Nothing
             Nothing
-            (Just [])
-            (Just [])
-            (Just
-              "Striot.FunctionalIoTtypes, Striot.FunctionalProcessing, Striot.Nodes"
-            )
-            (Just "random, example")
-            (Just True)
+            []
+            []
+            "Striot.FunctionalIoTtypes, Striot.FunctionalProcessing, Striot.Nodes"
+            "random, example"
+            True
 
         describe "when optimise is True" $ do
           it "correctly reads the data about the node" $ do
@@ -114,8 +108,9 @@ spec = do
 
         describe "when optimise is False" $ do
           it "correctly reads the data about the node" $ do
+            let updatedNode = expectedNode { optimise = False }
             nodesFromJSON "test/files/single-node/generation-options/false.json"
-              `shouldReturn` [expectedNode]
+              `shouldReturn` [updatedNode]
 
     describe "on multiple nodes" $ do
       it
@@ -126,55 +121,51 @@ spec = do
               expectedNodes =
                 [ NRNode
                   "4b18bbc2.dcad64"
-                  (Just 1)
+                  1
                   "generation-options"
-                  (Just "-- code goes here")
+                  "-- code goes here"
                   Nothing
                   Nothing
-                  (Just [])
-                  (Just [])
-                  (Just
-                    "Striot.FunctionalIoTtypes, Striot.FunctionalProcessing, Striot.Nodes"
-                  )
-                  (Just "random, example")
-                  (Just True)
+                  []
+                  []
+                  "Striot.FunctionalIoTtypes, Striot.FunctionalProcessing, Striot.Nodes"
+                  "random, example"
+                  True
                 , NRNode
                   "5f773d75.f7a804"
-                  (Just 2) -- while there is another node first, it is a tab node so not relevant
+                  2 -- while there is another node first, it is a tab node so not relevant
                   "generic-input"
-                  (Just
-                    "do\n    i <- getStdRandom (randomR (1,10)) :: IO Int\n    let s = show i in do\n        threadDelay 1000000\n        putStrLn $ \"client sending \" ++ s\n        return s"
-                  )
+                  "do\n    i <- getStdRandom (randomR (1,10)) :: IO Int\n    let s = show i in do\n        threadDelay 1000000\n        putStrLn $ \"client sending \" ++ s\n        return s"
                   Nothing
                   (Just "String")
-                  (Just [["f196f84d.7140e8"]])
-                  (Just [[3]]) -- The ID above is for the second StrIoT node in the file
-                  Nothing
-                  Nothing
-                  Nothing
+                  [["f196f84d.7140e8"]]
+                  [[3]] -- The ID above is for the second StrIoT node in the file
+                  ""
+                  ""
+                  False
                 , NRNode "f196f84d.7140e8"
-                         (Just 3)
+                         3
                          "filter"
-                         (Just "(\\i -> (read i :: Int) > 5)")
+                         "(\\i -> (read i :: Int) > 5)"
                          (Just "String")
                          (Just "String")
-                         (Just [["6be7f1eb.edafc"]])
-                         (Just [[4]])
-                         Nothing
-                         Nothing
-                         Nothing
+                         [["6be7f1eb.edafc"]]
+                         [[4]]
+                         ""
+                         ""
+                         False
                 , NRNode
                   "6be7f1eb.edafc"
-                  (Just 4)
+                  4
                   "sink"
-                  (Just "mapM_ $ putStrLn . (\"receiving \"++) . show . value")
+                  "mapM_ $ putStrLn . (\"receiving \"++) . show . value"
                   (Just "String")
                   (Just "IO ()")
-                  (Just [])
-                  (Just [])
-                  Nothing
-                  Nothing
-                  Nothing
+                  []
+                  []
+                  ""
+                  ""
+                  False
                 ]
 
             actualNodes <- nodesFromJSON "test/files/multiple-node-types.json"
@@ -228,7 +219,7 @@ spec = do
       nodes <- n
 
       -- remove the func value for nodes to produce empty preSource for generate-opts node
-      let updatedNodes = map (\x -> x { func = Just "" }) nodes
+      let updatedNodes = map (\x -> x { func = "" }) nodes
       let opts         = getStrIoTGenerateOpts updatedNodes
 
       compareOpts opts expectedOpts
@@ -242,7 +233,7 @@ spec = do
       nodes <- n
 
       -- remove the func value for nodes to produce empty preSource for generate-opts node
-      let updatedNodes = map (\x -> x { imports = Just "" }) nodes
+      let updatedNodes = map (\x -> x { imports = "" }) nodes
       let opts         = getStrIoTGenerateOpts updatedNodes
 
       compareOpts opts expectedOpts

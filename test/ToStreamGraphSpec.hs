@@ -19,16 +19,16 @@ spec = do
     describe "with a single node" $ do
       let nodes =
             [ NRNode "780d3bdd.622694"
-                     (Just 1)
+                     1
                      "filter"
-                     (Just "filter :: Int -> Bool\nfilter x = x > 5")
+                     "filter :: Int -> Bool\nfilter x = x > 5"
                      Nothing
                      (Just "String")
-                     (Just [[]])
-                     (Just [[]])
-                     Nothing
-                     Nothing
-                     Nothing
+                     [[]]
+                     [[]]
+                     ""
+                     ""
+                     False
             ]
       let graph = toStreamGraph nodes
 
@@ -40,27 +40,27 @@ spec = do
       -- each node is connected back to the other
       let nodes =
             [ NRNode "node1"
-                     (Just 1)
+                     1
                      "filter"
-                     (Just "filter :: Int -> Bool\nfilter x = x > 5")
+                     "filter :: Int -> Bool\nfilter x = x > 5"
                      Nothing
                      (Just "Int")
-                     (Just [["node2"]])
-                     (Just [[2]])
-                     Nothing
-                     Nothing
-                     Nothing
+                     [["node2"]]
+                     [[2]]
+                     ""
+                     ""
+                     False
             , NRNode "node2"
-                     (Just 2)
+                     2
                      "filter"
-                     (Just "filter :: Int -> Bool\nfilter x = x < 3")
+                     "filter :: Int -> Bool\nfilter x = x < 3"
                      (Just "Int")
                      (Just "String")
-                     (Just [["node1"]])
-                     (Just [[1]])
-                     Nothing
-                     Nothing
-                     Nothing
+                     [["node1"]]
+                     [[1]]
+                     ""
+                     ""
+                     False
             ]
 
       let graph    = toStreamGraph nodes
