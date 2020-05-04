@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric, OverloadedStrings, RecordWildCards #-}
 
 module NRNode
   ( NRNode(..)
@@ -9,7 +9,18 @@ module NRNode
 where
 
 import           Data.Aeson
+-- import           Data.Aeson.Internal
+-- import           Data.Aeson.Internal.Time
+import           Data.Aeson.Parser
+-- import           Data.Aeson.Parser.Internal
+import           Data.Aeson.Types
+-- import           Data.Aeson.Encoding
+-- import           Data.Aeson.Encoding.Internal
+-- import           Data.Aeson.QQ.Simple
+-- import           Data.Aeson.Text
+-- import           Data.Aeson.TH
 import           Data.Maybe
+import           Data.Either
 import           GHC.Generics
 import           Data.List.Split
 import qualified Striot.CompileIoT             as C
@@ -39,13 +50,29 @@ instance FromJSON NRNode where
                              _          -> x
     }
 
+-- instance FromJSON NRNode where
+--   parseJSON = withObject "nrnode" $ \o -> do
+--     nrId     <- o .: "id"
+--     strId    <- o .:? "strId" .!= (-1)
+--     nodeType <- o .: "type"
+--     func     <- o .:? "func" .!= ""
+--     input    <- o .:? "input" .!= ""
+--     output   <- o .:? "output" .!= ""
+--     wires    <- o .:? "wires" .!= []
+--     strWires <- o .:? "strWires" .!= []
+--     imports  <- o .:? "imports" .!= ""
+--     packages <- o .:? "packages" .!= ""
+--     optimise <- o .:? "optimise" .!= False
+--     return NRNode { .. }
+
+
 -- | Reads the specified file and converts into an array of NRNodes
 nodesFromJSON :: FilePath -> IO [NRNode]
 nodesFromJSON x =
   addInputType
   .   addStrIds
   .   filterActualNodes
-  .   fromJust
+  .   fromMaybe (error "Unable to convert JSON file.")
   .   decode
   <$> B.readFile x :: IO [NRNode]
 
@@ -65,7 +92,7 @@ addInputType xs = map (\x -> x { input = getInputType xs x }) xs
 updateStrWires :: [NRNode] -> [NRNode]
 updateStrWires xs = map
   (\x -> x
-    { strWires = Just (map (filter (> 0) . map getId) (fromJust (wires x)))
+    { strWires = Just (map (filter (> 0) . map getId) (fromMaybe [] (wires x)))
     }
   )
   xs
@@ -74,13 +101,16 @@ updateStrWires xs = map
 -- | Tries to find the StrId for a Node given its NrID
 getStrId :: [NRNode] -> String -> Int
 getStrId xs id | null results = -1
-               | otherwise    = fromJust . strId . head $ results
+               | otherwise    = fromMaybe (-1) . strId . head $ results
   where results = filter (\x -> id == nrId x) xs
 
 -- | Finds a specific node in an array of NRNodes which has the specified strID
 -- TODO: add error handling for if node not found 
 getNodeByStrId :: [NRNode] -> Int -> NRNode
-getNodeByStrId xs i = head . filter (\x -> fromJust (strId x) == i) $ xs
+getNodeByStrId xs i = case results of
+  []      -> error ("No node found with ID " ++ show i)
+  (x : _) -> x
+  where results = filter (maybe False (i ==) . strId) xs
 
 -- | Finds the input type for a specified node by finding the input node and returning the type
 getInputType :: [NRNode] -> NRNode -> Maybe String
@@ -89,7 +119,10 @@ getInputType xs n = case inputs of
   _  -> output . head $ inputs
  where
   inputs = filter
-    (\x -> (fromJust . strId $ n) `elem` (concat . fromJust . strWires $ x))
+    (\x ->
+      (fromMaybe (error "Node does not have strId") . strId $ n)
+        `elem` (maybe [] concat . strWires $ x)
+    )
     xs
 
 -- | Creates a GenerateOpts datatype from a list of NRNodes (where one is the 'generation-options node type')
@@ -109,8 +142,8 @@ getGenerationOptsNode xs = case results of
 toStrIoTGenerateOpts :: NRNode -> C.GenerateOpts
 toStrIoTGenerateOpts x
   | nodeType x == "generation-options" = C.GenerateOpts
-    (map (unwords . words) (endBy "," $ fromJust . imports $ x))
-    (map (unwords . words) (endBy "," $ fromJust . packages $ x))
+    (map (unwords . words) (endBy "," $ fromMaybe "" . imports $ x))
+    (map (unwords . words) (endBy "," $ fromMaybe "" . packages $ x))
     ps
     (fromMaybe False . optimise $ x)
   | otherwise = error "Node must be of type 'generation-options'"

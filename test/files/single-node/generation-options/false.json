@@ -1,0 +1,13 @@
+[{
+    "id": "4b18bbc2.dcad64",
+    "type": "generation-options",
+    "z": "9465397e.467d38",
+    "name": "",
+    "func": "-- code goes here",
+    "imports": "Striot.FunctionalIoTtypes, Striot.FunctionalProcessing, Striot.Nodes",
+    "packages": "random, example",
+    "optimise": "",
+    "x": 240,
+    "y": 180,
+    "wires": []
+}]

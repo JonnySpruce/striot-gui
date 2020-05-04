@@ -106,10 +106,16 @@ spec = do
             (Just "random, example")
             (Just True)
 
-        it "correctly reads the data about the node" $ do
+        describe "when optimise is True" $ do
+          it "correctly reads the data about the node" $ do
+            nodesFromJSON "test/files/single-node/generation-options/true.json"
+              `shouldReturn` [expectedNode]
 
-          nodesFromJSON "test/files/single-node/generation-options.json"
-            `shouldReturn` [expectedNode]
+
+        describe "when optimise is False" $ do
+          it "correctly reads the data about the node" $ do
+            nodesFromJSON "test/files/single-node/generation-options/false.json"
+              `shouldReturn` [expectedNode]
 
     describe "on multiple nodes" $ do
       it
