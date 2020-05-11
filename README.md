@@ -1,8 +1,16 @@
 # StrIoT GUI
 
-Allows for Haskell-based pure functional stream processing in the Node-RED tool, allowing for quick and easy development for the [StrIoT](https://github.com/striot/striot/) system.
+Allows for Haskell-based pure functional stream processing in the Node-RED tool, utilising the [StrIoT](https://github.com/striot/striot/) system to generate stream processing programs from Node-RED exports.
 
-Takes output from Node-RED using the nodes added in the [StrIoT Nodes](https://github.com/JonnySpruce/striot-nodes) project, and automatically creates an input to the [StrIoT](https://github.com/striot/striot/) system, which can then generate a pure functional stream processing application.
+With the nodes added in the [StrIoT Nodes](https://github.com/JonnySpruce/striot-nodes) package, you can define pure functional stream processing using the Node-RED interface. This tool then takes the export from Node-RED and generates the full code for the application. 
+
+Once installed, using the program is as simple as running `striot-gui-exe /path/to/your/node-red/export` in the terminal.
+
+**Features:**
+
+- Use just one command to generate stream processing applications from a Node-RED export.
+- Supports all nodes added by the [StrIoT Nodes](https://github.com/JonnySpruce/striot-nodes) project.
+- Utilises the [StrIoT](https://github.com/striot/striot/) system for program generation.
 
 ## Getting Started
 
@@ -19,7 +27,7 @@ Recommended for generating Node-RED output for the StrIoT system:
 
 ### Installation
 
-Firstly, close the repository:
+Firstly, clone the repository:
 
 ```bash
 git clone https://github.com/JonnySpruce/striot-gui.git
@@ -54,6 +62,16 @@ There will now be two new directories in your current location - `node1` and `no
 
 There are also example flows in the [examples](examples) directory, which you can inspect to see how the flow is structured and the code is written. The JSON file was created with the [StrIoT Nodes](https://github.com/JonnySpruce/striot-nodes) package. The examples can be run using the `docker-compose up` command in the directory of the example you want to run (**Note:** [Docker](https://www.docker.com/) must be installed).
 
-## Testing
+## Contributing
 
-The tests can be run locally with the command `stack test`.
+All contributions are welcome! Any work on the issues raised in the [issue tracker](https://github.com/JonnySpruce/striot-gui/issues) is always greatly appreciated. Alternatively, if you have a feature that you would like to add or a bug that you'd like to fix which isn't mentioned in the [issue tracker](https://github.com/JonnySpruce/striot-gui/issues), feel free to [create a new issue](https://github.com/JonnySpruce/striot-gui/issues/new/choose) to discuss it.
+
+For any pull request which adds new code, tests should also be included. All tests must pass before code can be merged.
+
+### Testing
+
+The tests are written using [Hspec](https://hspec.github.io/), and can be run locally with the command `stack test`.
+
+## Bugs & Feature Requests
+
+If you're having an issue with the tool or have a feature request to add, please feel free to raise an issue in the [issue tracker](https://github.com/JonnySpruce/striot-gui/issues).
