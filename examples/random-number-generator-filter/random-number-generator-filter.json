@@ -1,0 +1,53 @@
+[{
+    "id": "8831ea90.f94ca8",
+    "type": "tab",
+    "label": "Flow 1",
+    "disabled": false,
+    "info": ""
+}, {
+    "id": "ef3c614a.904d1",
+    "type": "generic-input",
+    "z": "8831ea90.f94ca8",
+    "name": "random number",
+    "func": "do\n    i <- getStdRandom (randomR (1,10)) :: IO Int\n    let s = i in do\n        threadDelay 1000000\n        putStrLn $ \"number generated: \" ++ (show s)\n        return s",
+    "output": "Int",
+    "x": 170,
+    "y": 180,
+    "wires": [
+        ["46a15644.133ae8"]
+    ]
+}, {
+    "id": "46a15644.133ae8",
+    "type": "filter",
+    "z": "8831ea90.f94ca8",
+    "name": "filter > 5",
+    "func": "(\\i -> i > 5",
+    "output": "String",
+    "x": 340,
+    "y": 180,
+    "wires": [
+        ["ae2bd60f.bf3fd8"]
+    ]
+}, {
+    "id": "ae2bd60f.bf3fd8",
+    "type": "sink",
+    "z": "8831ea90.f94ca8",
+    "name": "show output",
+    "func": "putStrLn . (\"receiving \"++) . show . value",
+    "output": "IO ()",
+    "x": 500,
+    "y": 180,
+    "wires": []
+}, {
+    "id": "3f671db0.9c6bf2",
+    "type": "generation-options",
+    "z": "8831ea90.f94ca8",
+    "name": "",
+    "func": "",
+    "imports": "System.Random",
+    "packages": "",
+    "optimise": "",
+    "x": 250,
+    "y": 100,
+    "wires": []
+}]
